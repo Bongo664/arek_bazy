@@ -1,0 +1,71 @@
+body,html{
+    margin: 0;
+    padding: 0;
+    background-color: darkgray;
+}
+.menu{
+    width: 20%;
+    float: left;
+}
+.window{
+    width: 80%;
+    float: left;
+}
+.header{
+    padding-top: 20px;
+    margin: 0;
+    padding: 0;
+    height: 150px;
+    background-color: lightgray;
+}
+.content{
+    padding-top: 50px;
+    min-height: 600px;
+    background-color: gray;
+}
+.footer{
+    padding-top: 20px;
+    height: 150px;
+    background-color: lightgray;
+}
+.Formcars{
+    padding: 20px;
+    width: 450px;
+    margin-top: 25px;
+    margin-left: auto;
+    margin-right: auto;
+    border: 2px solid white;
+    border-radius: 20px;
+}
+.calcForm{
+    padding: 20px;
+    width: 450px;
+    margin-top: 25px;
+    margin-left: auto;
+    margin-right: auto;
+    border: 2px solid white;
+    border-radius: 20px;
+}
+.formcontact{
+    padding: 20px;
+    width: 850px;
+    margin-top: 25px;
+    margin-left: auto;
+    margin-right: auto;
+    border: 2px solid white;
+    border-radius: 20px;
+}
+
+.wynik{
+    padding: 10px;
+    width: 250px;
+    margin-top: 25px;
+    margin-left: auto;
+    margin-right: auto;
+    border: 2px solid white;
+    border-radius: 10px;
+}
+h1{
+    margin: 0;
+    padding: 0;
+}
