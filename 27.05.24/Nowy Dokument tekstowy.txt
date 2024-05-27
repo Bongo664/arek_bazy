@@ -1,0 +1,6 @@
+utwórz prezentacje ze swoimi przykladami pobierania danych w formie json do swojej storny internetowej
+
+A. Utworz swoj plik .json
+B. Zarejestruj sie w darmowym api pogodowym np api.openweathermap.org
+C. Korzystajac z zadania 1 pliku json
+D. Pobierz wszystkie posty ze strony internetowej szkol

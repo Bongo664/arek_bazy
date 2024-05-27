@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        function pobierz(){
+            fetch("data.json").then(response => {
+                return response.json();
+            }).then(data => {
+                funkcjadoktorejprzkazujemydane(data);
+            }).catch(error => {
+                console.error("komunikat error", error);
+            });
+        };
+
+        function funkcjadoktorejprzkazujemydane(data){
+            data.forEach(item => {
+                console.log(item.name + "\n" + item.email);
+            });
+        };
+        pobierz();
+    </script>
+</body>
+</html>

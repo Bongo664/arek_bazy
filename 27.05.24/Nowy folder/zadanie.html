@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="dane"></div>
+    <script>
+        function pobierz(){
+            
+            fetch("data.json")
+            .then(response => {return response.json();})
+            .then(data=>{funkcjaDoKtorejPrzekazujemyDane(data);})
+            .catch(error=>{console.error("komunikat error",error)});
+        }
+        
+        function funkcjaDoKtorejPrzekazujemyDane(data){
+            let dane = document.getElementById("dane");
+            data.forEach(item=>{
+                console.log(item.name + "\n" + item.email);
+                dane.innerHTML += `
+                    ${item.name} <br>${item.email}<hr>
+                `;
+            });
+        };
+        pobierz();
+    </script>
+</body>
+</html>
