@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>REST API - pobieranie danych po GET z backend/bazydanych</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="zawartosc">
+      <h2>Lista zdjęć</h2>
+      <hr />
+      <button onclick="FetchUsers()">Pobierz Dane</button>
+      <div id="dane"></div>
+      <script>
+        async function FetchUsers() {
+          try {
+            const responce = await fetch(
+              "https://jsonplaceholder.typicode.com/photos"
+            );
+            if (!responce.ok) {
+              throw new Error("Brak polaczenia....." + responce.statusText);
+            }
+            const users = await responce.json();
+            pobierzIpokaz(users);
+          } catch (error) {
+            console.error("Problem z pobraniem danych", error);
+          }
+        }
+
+        function pobierzIpokaz(users) {
+          users.forEach((user) => {
+            const userDIV = document.createElement("div");
+            userDIV.innerHTML += `
+                            <h4>${user.id}</h4>
+                            <p><strong>Tytuł: </strong> ${user.title}</p>
+                            <p><strong>Zdjęcie: </strong> <img src="${user.url}"></p>
+                            <p><strong>thumbnailUrl: </strong> <img src="${user.thumbnailUrl}"></p>
+                            <hr>
+                        `;
+            const dane = document.getElementById("dane");
+            dane.appendChild(userDIV);
+          });
+        }
+      </script>
+    </div>
+  </body>
+</html>

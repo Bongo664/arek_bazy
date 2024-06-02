@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>REST API - pobieranie danych po GET z backend/bazydanych</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="zawartosc">
+      <h2>Lista Postów Szkoły</h2>
+      <hr />
+      <button onclick="Fetchposts()">Pobierz Dane</button>
+      <div id="dane"></div>
+      <script>
+        async function Fetchposts() {
+          try {
+            const responce = await fetch(
+              "https://pzs1.pszczyna.edu.pl/wp-json/wp/v2/posts"
+            );
+            if (!responce.ok) {
+              throw new Error("Brak polaczenia....." + responce.statusText);
+            }
+            const post = await responce.json();
+            pobierzIpokaz(post);
+          } catch (error) {
+            console.error("Problem z pobraniem danych", error);
+          }
+        }
+
+        function pobierzIpokaz(post) {
+          post.forEach((post) => {
+            const postDIV = document.createElement("div");
+            postDIV.innerHTML += `
+                            <h4>ID: ${post.id}</h4>
+                            <p><strong>Tytuł: </strong> ${post.title.rendered}</p>
+                            <p><strong>Data: </strong> ${post.date}</p>
+                            <p><strong>Data(gmt): </strong> ${post.date_gmt}</p>
+                            <p><strong>Img: <?strong> <img src="${post.thumbnailUrl}"> </p>
+                            <p><strong>Content: </strong> ${post.content.renderd}</p>
+                            <hr>
+                        `;
+            const dane = document.getElementById("dane");
+            dane.appendChild(postDIV);
+          });
+        }
+      </script>
+    </div>
+  </body>
+</html>
