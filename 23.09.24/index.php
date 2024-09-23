@@ -32,7 +32,8 @@ $result = $query->get_result();
     <form action="php/upload.php" method="post" enctype="multipart/form-data">
         <label for="pdf_file">Dodaj nowy plik PDF:</label>
         <input type="file" id="pdf_file" name="pdf_file" accept=".pdf" required>
-        <button type="submit"></button>
+        <button type="submit">Wyślij</button>
     </form>
+    <a href="php/logout.php">Wyloguj się</a>
 </body>
 </html>
