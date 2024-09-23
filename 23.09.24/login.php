@@ -14,7 +14,14 @@ if ($_SERVER('REQUEST_METHOD') == 'POST') {
             $_SESSION['user_id'] = $user['id'];
             header('Location: index.php');
             exit;
+        } else {
+            $error = "Niepoprawne hasło!";
         }
+        else {
+            $error = "Nieznany użytkownik!";
+        }
+    }
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
