@@ -1,1 +1,0 @@
-utwórz prezentacje 10 slajdów min temat widoki w mysql. prezentacja zawiera moją własną bazę danych wiele do wielu. utwórz conajmniej 5 różnych widoków oraz pobierz dane z tych widoków zaprezentuj zrzuty ekranów
