@@ -4,7 +4,7 @@ include('../includes/db.php');
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $username = $_POST['username'];
     $password = $_POST['password'];
-    $query = $conn->prepare("SELECT * FROM users WHERE username =?");
+    $query = $conn->prepare("SELECT * FROM users WHERE username = ?");
     $query->bind_param('s', $username);
     $query->execute();
     $result = $query->get_result();
@@ -12,12 +12,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $user = $result->fetch_assoc();
         if (password_verify($password, $user['password'])) {
             $_SESSION['user_id'] = $user['id'];
-            header('Location: ../index.php');
+            header('Location: index.php');
             exit;
         } else {
             $error = 'nieprawne hasło';
         }
-    }else{
+    } else {
         $error = 'nieznany użytkownik';
     }
 }
@@ -33,7 +33,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <div class="login-container">
         <form action="login.php" method="post">
             <h2>logowanie</h2>
-            <?php if(isset($error)) echo "<p class='error'>$error</p>";?>
+            <?php if (isset($error)) echo "<p class='error'>$error</p>"; ?>
             <label for="username">Nazwa użytkownika:</label>
             <input type="text" id="username" name="username" required>
             <label for="password">Hasło:</label>
