@@ -3,11 +3,11 @@
 
 ## Możliwe rozwiązania:
 
-1. **PHP + JavaScript (setInterval) + XMLHTTPRequest**
+1. **PHP + JavaScript (setInterval) + XMLHTTPRequest (metoda POST)**
    - Klasyczne podejście z użyciem metody POST
    - Tradycyjna implementacja z wykorzystaniem natywnego JavaScript
 
-2. **PHP + JavaScript (setInterval) + XMLHTTPRequest (jQuery)**
+2. **PHP + JavaScript (setInterval) + XMLHTTPRequest (jQuery + Metoda POST)**
    - Implementacja z wykorzystaniem biblioteki jQuery
    - Komunikacja poprzez metodę POST
 
