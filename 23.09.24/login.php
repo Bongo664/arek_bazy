@@ -1,12 +1,14 @@
 <?php
 session_start();
 include('includes/db.php');
-if ($_SERVER('REQUEST_METHOD') == 'POST') {
-    $username = $_POST('username');
-    $password = $_POST('password');
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $username = $_POST['username'];
+    $password = $_POST['password'];
+    
     $query = $conn->prepare("SELECT * FROM users WHERE username = ?");
     $query->bind_param('s', $username);
     $query->execute();
+
     $result = $query->get_result();
     if ($result->num_rows > 0) {
         $user = $result->fetch_assoc();
@@ -15,7 +17,10 @@ if ($_SERVER('REQUEST_METHOD') == 'POST') {
             header('Location: index.php');
             exit;
         } else {
-            $error = "Niepoprawne hasło!";
+            $error = 'nieprawne hasło';
+        }
+        else {
+            $error = "Nieznany użytkownik!";
         }
     }
 }
@@ -26,18 +31,17 @@ if ($_SERVER('REQUEST_METHOD') == 'POST') {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
     <div class="login-container">
         <form action="login.php" method="post">
             <h2>logowanie</h2>
-            <?php if (isset($error)) { echo "<p class='error'>$error</p>"; }?>
+            <?php if (isset($error)) echo "<p class='error'>$error</p>"; ?>
             <label for="username">Nazwa użytkownika:</label>
             <input type="text" id="username" name="username" required>
             <label for="password">Hasło:</label>
             <input type="password" id="password" name="password" required>
-            <button type="submit">Zaloguj się</button>
+            <button type="submit">Zaloguj</button>
         </form>
     </div>
 </body>

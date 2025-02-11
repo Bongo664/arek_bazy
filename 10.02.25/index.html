@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="pl">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Interfejs Czatowy</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+            }
+            .czat-kontener {
+                width: 300px;
+                margin: 0 auto;
+                border: 1px solid #ccc;
+                padding: 10px;
+                border-radius: 5px;
+            }
+            .wiadomosci {
+                height: 200px;
+                overflow-y: scroll;
+                border: 1px solid #ccc;
+                padding: 5px;
+                margin-bottom: 10px;
+            }
+            .kontener-wejsciowy {
+                display: flex;
+            }
+            .kontener-wejsciowy input {
+                flex: 1;
+                padding: 5px;
+            }
+            .kontener-wejsciowy button {
+                padding: 5px 10px;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="czat-kontener">
+            <div class="wiadomosci" id="wiadomosci"></div>
+            <div class="kontener-wejsciowy">
+                <input type="text" id="wejscieWiadomosci" placeholder="Wpisz wiadomość...">
+                <button onclick="wyslijWiadomosc()">Wyślij</button>
+            </div>
+        </div>
+    
+        <script>
+            function wyslijWiadomosc() {
+                const wejscieWiadomosci = document.getElementById('wejscieWiadomosci');
+                const wiadomosci = document.getElementById('wiadomosci');
+                const wiadomosc = wejscieWiadomosci.value;
+                
+                if (wiadomosc.trim() !== '') {
+                    const elementWiadomosci = document.createElement('div');
+                    elementWiadomosci.textContent = wiadomosc;
+                    wiadomosci.appendChild(elementWiadomosci);
+                    wejscieWiadomosci.value = '';
+                    wiadomosci.scrollTop = wiadomosci.scrollHeight;
+                }
+            }
+        </script>
+</body>
+</html>
