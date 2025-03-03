@@ -19,8 +19,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         } else {
             $error = 'nieprawne hasło';
         }
+<<<<<<< HEAD
     } else {
         $error = 'nieznany użytkownik';
+=======
+        else {
+            $error = "Nieznany użytkownik!";
+        }
+>>>>>>> a7a64dc287cce60d9689a53c424c1a4a7c194284
     }
 }
 ?>

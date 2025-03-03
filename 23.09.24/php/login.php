@@ -4,7 +4,11 @@ include('../includes/db.php');
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $username = $_POST['username'];
     $password = $_POST['password'];
+<<<<<<< HEAD
     $query = $conn->prepare("SELECT * FROM users WHERE username = ?");
+=======
+    $query = $conn->prepare("SELECT * FROM users WHERE username =?");
+>>>>>>> a7a64dc287cce60d9689a53c424c1a4a7c194284
     $query->bind_param('s', $username);
     $query->execute();
     $result = $query->get_result();
@@ -17,7 +21,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         } else {
             $error = 'nieprawne hasło';
         }
+<<<<<<< HEAD
     } else {
+=======
+    }else{
+>>>>>>> a7a64dc287cce60d9689a53c424c1a4a7c194284
         $error = 'nieznany użytkownik';
     }
 }
@@ -33,7 +41,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <div class="login-container">
         <form action="login.php" method="post">
             <h2>logowanie</h2>
+<<<<<<< HEAD
             <?php if (isset($error)) echo "<p class='error'>$error</p>"; ?>
+=======
+            <?php if(isset($error)) echo "<p class='error'>$error</p>";?>
+>>>>>>> a7a64dc287cce60d9689a53c424c1a4a7c194284
             <label for="username">Nazwa użytkownika:</label>
             <input type="text" id="username" name="username" required>
             <label for="password">Hasło:</label>
