@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .paragraph {
+            cursor: pointer;
+            padding: 10px;
+            margin: 10px;
+            border: 1px solid black;
+            background-color: #f0f0f0;
+        }
+    </style>
+</head>
+<body>
+    <p id="delta" class="paragraph">Kliknij aby obliczyć deltę i pierwiastki równania kwadratowego</p>
+    <p id="bmi" class="paragraph">Kliknij aby obliczyć BMI</p>
+    <p id="name" class="paragraph">Kliknij aby sprawdzić długość imienia</p>
+
+    <script>
+        document.getElementById('delta').addEventListener('click', function() {
+            const a = parseFloat(prompt('Podaj a:'));
+            const b = parseFloat(prompt('Podaj b:'));
+            const c = parseFloat(prompt('Podaj c:'));
+
+            const delta = (b*b - 4*a*c).toFixed(2);
+            alert(`Delta = ${delta}`);
+
+            if (delta > 0) {
+                const x1 = (-b - Math.sqrt(delta))/(2*a);
+                const x2 = (-b + Math.sqrt(delta))/(2*a);
+                alert(`Pierwiastki równania to:\nx1 = ${x1.toFixed(2)}\nx2 = ${x2.toFixed(2)}`);
+            } 
+            else if (delta == 0) {
+                const x = (-b/(2*a)).toFixed(2);
+                alert(`Jeden pierwiastek: x = ${x}`);
+            }
+            else {
+                alert('Brak pierwiastków');
+            }
+        });
+
+        document.getElementById('bmi').addEventListener('click', function() {
+            const weight = parseFloat(prompt('Podaj wagę (kg):'));
+            const height = parseFloat(prompt('Podaj wzrost (cm):'));
+            
+            if (!isNaN(weight) && !isNaN(height) && height > 0) {
+                const heightInMeters = height / 100;
+                const bmi = weight / (heightInMeters * heightInMeters);
+                let category = '';
+                
+                if (bmi < 18.5) category = 'niedowaga';
+                else if (bmi < 25) category = 'waga prawidłowa';
+                else if (bmi < 30) category = 'nadwaga';
+                else category = 'otyłość';
+
+                alert(`Twoje BMI: ${bmi.toFixed(2)}\nKategoria: ${category}`);
+            } else {
+                alert('Wprowadź poprawne dane!');
+            }
+        });
+
+        document.getElementById('name').addEventListener('click', function() {
+            const name = prompt('Podaj swoje imię:');
+            if (name) {
+                alert(`Twoje imię "${name}" ma ${name.length} znaków`);
+            }
+        });
+    </script>
+</body>
+</html>
