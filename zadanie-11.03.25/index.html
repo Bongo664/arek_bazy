@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .paragraph {
+            cursor: pointer;
+            padding: 10px;
+            margin: 10px;
+            border: 1px solid black;
+        }
+    </style>
+</head>
+<body>
+    <p id="pan1" class="paragraph">Kliknij aby obliczyć pole koła</p>
+    <p id="pan2" class="paragraph">Kliknij aby wprowadzić imię</p>
+    <p id="pan3" class="paragraph">Kliknij aby zmienić kolor tła</p>
+
+    <script>
+        document.getElementById('pan1').addEventListener('click', function() {
+            const r = prompt('Podaj promień koła:');
+            if (r !== null && !isNaN(r)) {
+                const area = Math.PI * Math.pow(parseFloat(r), 2);
+                alert(`Pole koła wynosi: ${area.toFixed(2)}`);
+            }
+        });
+
+        document.getElementById('pan2').addEventListener('click', function() {
+            const name = prompt('Podaj swoje imię:');
+            if (name) {
+                alert(`Witaj ${name}!`);
+            }
+        });
+
+        document.getElementById('pan3').addEventListener('click', function() {
+            const randomColor = '#' + Math.floor(Math.random()*16777215).toString(16);
+            document.body.style.backgroundColor = randomColor;
+        });
+    </script>
+</body>
+</html>
