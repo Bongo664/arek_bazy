@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Obliczenia</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+
+        .paragraph {
+            cursor: pointer;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 8px;
+            background-color: #ffffff;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .paragraph:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+            background-color: #f8f9fa;
+        }
+
+        .form-container {
+            margin: 20px 0;
+            padding: 20px;
+            border-radius: 8px;
+            background-color: #ffffff;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        h3 {
+            color: #2c3e50;
+            margin-top: 0;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #e9ecef;
+            padding-bottom: 10px;
+        }
+
+        label {
+            display: block;
+            margin: 10px 0 5px;
+            color: #495057;
+        }
+
+        input {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 15px;
+            border: 1px solid #ced4da;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #4CAF50;
+            box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.2);
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        #delta-result, #bmi-result, #name-result {
+            margin-top: 15px;
+            padding: 10px;
+            border-radius: 4px;
+            background-color: #e9ecef;
+            color: #2c3e50;
+        }
+    </style>
+</head>
+<body>
+    <p id="delta" class="paragraph">Kliknij aby obliczyć deltę i pierwiastki równania kwadratowego</p>
+    <p id="bmi" class="paragraph">Kliknij aby obliczyć BMI</p>
+    <p id="name" class="paragraph">Kliknij aby sprawdzić długość imienia</p>
+
+    <div id="form-area"></div>
+
+    <script>
+        function createForm(htmlContent) {
+            document.getElementById('form-area').innerHTML = htmlContent;
+        }
+
+        document.getElementById('delta').addEventListener('click', function() {
+            createForm(`
+                <div class="form-container">
+                    <h3>Oblicz deltę</h3>
+                    <label>a: <input type="number" id="a"></label><br>
+                    <label>b: <input type="number" id="b"></label><br>
+                    <label>c: <input type="number" id="c"></label><br>
+                    <button onclick="calculateDelta()">Oblicz</button>
+                    <p id="delta-result"></p>
+                </div>
+            `);
+        });
+
+        function calculateDelta() {
+            const a = parseFloat(document.getElementById('a').value);
+            const b = parseFloat(document.getElementById('b').value);
+            const c = parseFloat(document.getElementById('c').value);
+            const delta = (b*b - 4*a*c).toFixed(2);
+            let result = `Delta = ${delta}`;
+
+            if (delta > 0) {
+                const x1 = (-b - Math.sqrt(delta)) / (2 * a);
+                const x2 = (-b + Math.sqrt(delta)) / (2 * a);
+                result += `<br>Pierwiastki: x1 = ${x1.toFixed(2)}, x2 = ${x2.toFixed(2)}`;
+            } else if (delta == 0) {
+                const x = (-b / (2 * a)).toFixed(2);
+                result += `<br>Jeden pierwiastek: x = ${x}`;
+            } else {
+                result += `<br>Brak pierwiastków`;
+            }
+
+            document.getElementById('delta-result').innerHTML = result;
+        }
+
+        document.getElementById('bmi').addEventListener('click', function() {
+            createForm(`
+                <div class="form-container">
+                    <h3>Oblicz BMI</h3>
+                    <label>Waga (kg): <input type="number" id="weight"></label><br>
+                    <label>Wzrost (cm): <input type="number" id="height"></label><br>
+                    <button onclick="calculateBMI()">Oblicz</button>
+                    <p id="bmi-result"></p>
+                </div>
+            `);
+        });
+
+        function calculateBMI() {
+            const weight = parseFloat(document.getElementById('weight').value);
+            const height = parseFloat(document.getElementById('height').value) / 100;
+            if (!isNaN(weight) && !isNaN(height) && height > 0) {
+                const bmi = weight / (height * height);
+                let category = '';
+                if (bmi < 18.5) category = 'niedowaga';
+                else if (bmi < 25) category = 'waga prawidłowa';
+                else if (bmi < 30) category = 'nadwaga';
+                else category = 'otyłość';
+                document.getElementById('bmi-result').innerHTML = `Twoje BMI: ${bmi.toFixed(2)}<br>Kategoria: ${category}`;
+            } else {
+                document.getElementById('bmi-result').innerHTML = 'Wprowadź poprawne dane!';
+            }
+        }
+
+        document.getElementById('name').addEventListener('click', function() {
+            createForm(`
+                <div class="form-container">
+                    <h3>Sprawdź długość imienia</h3>
+                    <label>Imię: <input type="text" id="name-input"></label><br>
+                    <button onclick="checkNameLength()">Sprawdź</button>
+                    <p id="name-result"></p>
+                </div>
+            `);
+        });
+
+        function checkNameLength() {
+            const name = document.getElementById('name-input').value;
+            if (name) {
+                document.getElementById('name-result').innerHTML = `Twoje imię "${name}" ma ${name.length} znaków`;
+            }
+        }
+    </script>
+</body>
+</html>
