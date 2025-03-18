@@ -1,0 +1,427 @@
+1.	Co to jest addEventListener i do czego służy?
+addEventListener to metoda służąca do dodawania nasłuchiwacza zdarzeń do elementu HTML. Pozwala na reagowanie na interakcje użytkownika, takie jak kliknięcia (click), naciśnięcia klawiszy (keydown) itp.
+2.	Jakie trzy podstawowe argumenty przyjmuje addEventListener?
+o	Typ zdarzenia (np. "click", "keydown")
+o	Funkcja obsługująca zdarzenie (callback)
+o	Opcjonalny obiekt konfiguracyjny lub wartość useCapture (domyślnie false)
+Przykład:
+document.getElementById("btn").addEventListener("click", function() {
+    console.log("Przycisk kliknięty!");
+});
+3.	Jaka jest różnica między addEventListener a przypisaniem zdarzenia za pomocą onclick?
+o	addEventListener pozwala dodać wiele nasłuchiwaczy do jednego elementu, natomiast onclick nadpisuje poprzednią wartość.
+o	addEventListener daje większą kontrolę, np. pozwala na obsługę propagacji zdarzeń (capture, bubbling).
+Przykład różnicy:
+
+
+let btn = document.getElementById("btn");
+
+btn.onclick = () => console.log("Klik 1");
+btn.onclick = () => console.log("Klik 2"); // Nadpisuje poprzednie onclick
+
+btn.addEventListener("click", () => console.log("Klik 3"));
+btn.addEventListener("click", () => console.log("Klik 4")); // Oba zdarzenia zostaną wykonane
+4.	Jak usunąć wcześniej dodany event listener?
+Można użyć removeEventListener, ale funkcja obsługująca musi być nazwanym odniesieniem:
+
+
+function handleClick() {
+    console.log("Kliknięto przycisk");
+}
+
+let btn = document.getElementById("btn");
+btn.addEventListener("click", handleClick);
+btn.removeEventListener("click", handleClick); // Usuwa nasłuchiwacz
+5.	Jak przekazać argumenty do funkcji obsługującej zdarzenie w addEventListener?
+Nie można bezpośrednio przekazać argumentów, ale można użyć funkcji anonimowej:
+
+
+let btn = document.getElementById("btn");
+btn.addEventListener("click", () => myFunction("argument"));
+function myFunction(arg) {
+    console.log("Argument:", arg);
+}
+6.	Co oznacza trzeci opcjonalny argument w addEventListener i jakie wartości może przyjmować?
+Trzeci argument może być wartością true lub false (dawniej useCapture) lub obiektem z opcjami:
+
+
+element.addEventListener("click", handler, { capture: true, once: true, passive: true });
+o	capture: true – obsługa zdarzenia w fazie capturing (przechwytywania).
+o	once: true – nasłuchiwacz wykona się tylko raz i zostanie automatycznie usunięty.
+o	passive: true – zapobiega użyciu event.preventDefault(), co może poprawić wydajność.
+7.	Jakie są różnice między capture a bubbling w kontekście obsługi zdarzeń?
+o	bubbling (domyślnie false) – zdarzenie propaguje się od elementu docelowego w górę do rodziców.
+o	capture (true) – zdarzenie propaguje się od góry drzewa DOM do elementu docelowego.
+Przykład:
+
+
+document.body.addEventListener("click", () => console.log("body"), true); // Capture
+document.getElementById("child").addEventListener("click", () => console.log("child"), false); // Bubbling
+8.	Jak dodać event listener do wielu elementów jednocześnie?
+Można użyć forEach na NodeList:
+
+
+document.querySelectorAll(".buttons").forEach(btn => {
+    btn.addEventListener("click", () => console.log("Kliknięto przycisk!"));
+});
+9.	Czy addEventListener może być używane do obsługi zdarzeń niestandardowych? Jeśli tak, to jak?
+Tak, można utworzyć i obsłużyć niestandardowe zdarzenie za pomocą CustomEvent:
+
+
+let event = new CustomEvent("mojeZdarzenie", { detail: { key: "value" } });
+
+document.addEventListener("mojeZdarzenie", (e) => {
+    console.log("Obsłużone zdarzenie:", e.detail);
+});
+
+document.dispatchEvent(event);
+10.	Co się stanie, jeśli wielokrotnie dodamy ten sam event listener do jednego elementu?
+Jeśli ta sama funkcja jest wielokrotnie dodawana jako listener, zostanie zarejestrowana tylko raz. Jednak jeśli używamy funkcji anonimowej, każda dodana funkcja będzie traktowana jako unikalna:
+
+
+let btn = document.getElementById("btn");
+
+function handleClick() {
+    console.log("Klik!");
+}
+
+btn.addEventListener("click", handleClick);
+btn.addEventListener("click", handleClick); // Nie zostanie dodane ponownie
+
+btn.addEventListener("click", () => console.log("Anonimowa funkcja")); // Każda nowa anonimowa funkcja zostanie dodana
+11. Czy addEventListener działa na elementach dynamicznie dodanych do DOM? Jeśli nie, jak można to obejść?
+Nie, addEventListener nie działa na elementach, które zostały dynamicznie dodane po przypisaniu nasłuchiwacza. Można to obejść, używając delegacji zdarzeń – dodając event listener do elementu nadrzędnego i sprawdzając event.target:
+
+
+document.body.addEventListener("click", function (event) {
+    if (event.target.classList.contains("dynamic-button")) {
+        console.log("Kliknięto dynamiczny przycisk!");
+    }
+});
+
+// Dodanie dynamicznego elementu
+let button = document.createElement("button");
+button.classList.add("dynamic-button");
+button.textContent = "Kliknij mnie";
+document.body.appendChild(button);
+________________________________________
+12. Jak zatrzymać propagację zdarzenia po jego przechwyceniu?
+Można użyć event.stopPropagation(), aby zatrzymać propagację zdarzenia w górę drzewa DOM (bubbling) lub w dół (capturing):
+
+
+document.getElementById("child").addEventListener("click", function (event) {
+    event.stopPropagation();
+    console.log("Kliknięto child, ale event nie dotrze do rodzica!");
+});
+________________________________________
+13. Jak obsłużyć zdarzenie klawiatury (keydown, keyup) za pomocą addEventListener?
+Można nasłuchiwać zdarzeń klawiatury na document lub konkretnym elemencie:
+
+
+document.addEventListener("keydown", function (event) {
+    console.log(`Naciśnięto klawisz: ${event.key}`);
+});
+________________________________________
+14. Co to jest event.target i event.currentTarget w obsłudze zdarzeń?
+•	event.target – element, na którym zdarzenie zostało wywołane.
+•	event.currentTarget – element, do którego został przypisany event listener.
+Przykład:
+
+
+document.getElementById("parent").addEventListener("click", function (event) {
+    console.log("target:", event.target); // Może być dziecko
+    console.log("currentTarget:", event.currentTarget); // Zawsze będzie "parent"
+});
+________________________________________
+15. Jak można nasłuchiwać zdarzenia na całym dokumencie zamiast na konkretnym elemencie?
+Dodając event listener do document:
+
+
+document.addEventListener("click", function () {
+    console.log("Kliknięto gdziekolwiek w dokumencie!");
+});
+________________________________________
+16. Jakie zdarzenia są dostępne w addEventListener? Podaj kilka przykładów.
+Kilka popularnych zdarzeń:
+•	Mysz: "click", "dblclick", "mousemove", "mousedown", "mouseup", "mouseover", "mouseout"
+•	Klawiatura: "keydown", "keyup", "keypress"
+•	Formularze: "submit", "change", "input"
+•	Okno: "load", "resize", "scroll", "focus", "blur"
+•	Dotyk: "touchstart", "touchmove", "touchend"
+Przykład:
+
+
+window.addEventListener("resize", () => {
+    console.log("Okno zmieniło rozmiar!");
+});
+________________________________________
+17. Co się stanie, jeśli dodasz addEventListener do tego samego elementu, ale z różnymi funkcjami?
+Obie funkcje zostaną wykonane niezależnie:
+
+
+let btn = document.getElementById("btn");
+
+btn.addEventListener("click", () => console.log("Handler 1"));
+btn.addEventListener("click", () => console.log("Handler 2"));
+
+// Po kliknięciu zobaczysz oba logi w konsoli
+________________________________________
+18. Czy można dodać addEventListener do obiektów window i document? Jeśli tak, podaj przykład.
+Tak, można. Na przykład nasłuchiwanie na scroll:
+
+
+window.addEventListener("scroll", () => {
+    console.log("Przewinięto stronę!");
+});
+________________________________________
+19. Jak wykryć, który klawisz został naciśnięty w zdarzeniu klawiatury?
+Używając event.key lub event.code:
+
+
+document.addEventListener("keydown", function (event) {
+    console.log(`Naciśnięto klawisz: ${event.key}`);
+});
+________________________________________
+20. Jak użyć once: true w addEventListener, aby zdarzenie wykonało się tylko raz?
+Można użyć opcji { once: true }, dzięki czemu event listener zostanie usunięty po pierwszym wykonaniu:
+
+
+document.getElementById("btn").addEventListener("click", function () {
+    console.log("To zdarzenie wykonuje się tylko raz!");
+}, { once: true });
+
+
+
+21. Czy addEventListener może być używane do obsługi zdarzeń na elementach SVG?
+Tak, addEventListener działa również na elementach SVG. Przykład:
+
+
+document.querySelector("svg").addEventListener("click", function () {
+    console.log("Kliknięto SVG!");
+});
+________________________________________
+22. Jak zapobiec domyślnej akcji przeglądarki w addEventListener?
+Można użyć event.preventDefault(), np. dla linków:
+
+
+document.querySelector("a").addEventListener("click", function (event) {
+    event.preventDefault(); // Zatrzymuje przejście do linku
+    console.log("Kliknięcie zostało zablokowane!");
+});
+________________________________________
+23. Jak dodać addEventListener do iframe?
+Można nasłuchiwać zdarzeń na iframe, ale trzeba pamiętać o polityce CORS (Cross-Origin Resource Sharing):
+
+
+document.getElementById("myIframe").contentWindow.addEventListener("load", function () {
+    console.log("Iframe został załadowany!");
+});
+________________________________________
+24. Czy można dodać ten sam event listener do różnych typów zdarzeń jednocześnie?
+Tak, można użyć pętli lub tablicy:
+
+
+["click", "mouseover"].forEach(eventType => {
+    document.getElementById("btn").addEventListener(eventType, () => {
+        console.log(`Zdarzenie: ${eventType}`);
+    });
+});
+________________________________________
+25. Jak sprawdzić, czy element ma już przypisany addEventListener?
+Nie ma wbudowanej metody, ale można obejść to np. za pomocą dataset lub WeakMap:
+
+
+let btn = document.getElementById("btn");
+
+if (!btn.dataset.listener) {
+    btn.addEventListener("click", () => console.log("Klik!"));
+    btn.dataset.listener = "true"; // Oznaczamy, że listener został dodany
+}
+________________________________________
+26. Paweł Cecot Jak obsłużyć zdarzenie tylko dla konkretnego elementu wewnątrz innego elementu?
+Używając event.target i sprawdzając jego klasę lub matches():
+
+
+document.getElementById("container").addEventListener("click", function (event) {
+    if (event.target.matches(".specific-item")) {
+        console.log("Kliknięto element o klasie .specific-item");
+    }
+});
+________________________________________
+27. Paweł Cecot Jak dodać addEventListener do elementu, który jeszcze nie istnieje w DOM?
+Można użyć delegacji zdarzeń:
+
+
+document.addEventListener("click", function (event) {
+    if (event.target && event.target.id === "dynamic-btn") {
+        console.log("Kliknięto dynamiczny przycisk!");
+    }
+});
+
+// Dodajemy nowy przycisk po czasie
+setTimeout(() => {
+    let btn = document.createElement("button");
+    btn.id = "dynamic-btn";
+    btn.textContent = "Kliknij mnie";
+    document.body.appendChild(btn);
+}, 2000);
+________________________________________
+28. Jak sprawić, aby addEventListener działał po każdej aktualizacji DOM przez innerHTML?
+Po każdej zmianie innerHTML trzeba ponownie dodać event listener:
+
+
+document.getElementById("update").addEventListener("click", function () {
+    document.getElementById("container").innerHTML = "<button id='new-btn'>Nowy przycisk</button>";
+
+    // Musimy dodać event listener ponownie
+    document.getElementById("new-btn").addEventListener("click", () => {
+        console.log("Kliknięto nowy przycisk!");
+    });
+});
+________________________________________
+29. Jak sprawić, aby event listener działał na wszystkich przyszłych elementach o danej klasie?
+Delegacja zdarzeń działa dobrze w tym przypadku:
+
+
+document.addEventListener("click", function (event) {
+    if (event.target.classList.contains("future-button")) {
+        console.log("Kliknięto przyszły przycisk!");
+    }
+});
+Teraz każdy element z .future-button, nawet jeśli zostanie dodany później, będzie obsługiwany.
+________________________________________
+30. Jak wykryć, czy zdarzenie zostało wywołane przez użytkownika czy przez skrypt?
+Można użyć isTrusted, które zwraca true dla akcji użytkownika i false dla zdarzeń wywołanych skryptem:
+
+
+document.getElementById("btn").addEventListener("click", function (event) {
+    if (event.isTrusted) {
+        console.log("Kliknięcie przez użytkownika!");
+    } else {
+        console.log("Kliknięcie wywołane skryptem!");
+    }
+});
+
+// Symulowanie kliknięcia przez skrypt
+document.getElementById("btn").click();
+
+
+31. Czy można usunąć event listener dodany przez addEventListener? Jak to zrobić?
+Tak, można użyć removeEventListener, ale trzeba przekazać dokładnie tę samą funkcję:
+
+
+function handleClick() {
+    console.log("Klik!");
+}
+
+let btn = document.getElementById("btn");
+btn.addEventListener("click", handleClick);
+
+// Usunięcie event listenera
+btn.removeEventListener("click", handleClick);
+Funkcja anonimowa nie zadziała, ponieważ nie można jej referować później.
+________________________________________
+32. Czy addEventListener działa na NodeList (np. querySelectorAll)?
+Nie bezpośrednio, ale można użyć pętli forEach:
+
+
+document.querySelectorAll(".btn").forEach(btn => {
+    btn.addEventListener("click", () => {
+        console.log("Kliknięto przycisk!");
+    });
+});
+________________________________________
+33. Jak dodać event listener dla wielu różnych elementów bez querySelectorAll?
+Można nasłuchiwać zdarzeń na wspólnym rodzicu (delegacja zdarzeń):
+
+
+document.getElementById("parent").addEventListener("click", function (event) {
+    if (event.target.classList.contains("child")) {
+        console.log("Kliknięto element o klasie .child");
+    }
+});
+________________________________________
+34. Jak obsłużyć zdarzenie podwójnego kliknięcia (dblclick) za pomocą addEventListener?
+Używając eventu "dblclick":
+
+
+document.getElementById("btn").addEventListener("dblclick", () => {
+    console.log("Podwójne kliknięcie!");
+});
+________________________________________
+35. Konrad Bieńkowski Jak sprawić, aby addEventListener działał tylko dla prawego przycisku myszy?
+Sprawdzając event.button:
+
+
+document.getElementById("btn").addEventListener("click", function (event) {
+    if (event.button === 2) {
+        console.log("Kliknięto prawym przyciskiem myszy!");
+    }
+});
+Prawy przycisk myszy ma wartość 2.
+________________________________________
+36. Jak dodać addEventListener, który reaguje tylko na konkretne klawisze?
+Używając event.key:
+
+
+document.addEventListener("keydown", function (event) {
+    if (event.key === "Enter") {
+        console.log("Naciśnięto Enter!");
+    }
+});
+________________________________________
+37. Jak nasłuchiwać zdarzenia mouseover, ale z wykluczeniem bąbelkowania?
+Używając mouseenter zamiast mouseover:
+
+
+document.getElementById("box").addEventListener("mouseenter", () => {
+    console.log("Mysz nad elementem!");
+});
+mouseenter działa tylko wtedy, gdy mysz wejdzie na ten konkretny element, a nie jego dzieci.
+________________________________________
+38. Jak dodać event listener z priorytetem (przechwytywanie capture)?
+Używając trzeciego argumentu true:
+
+
+document.getElementById("parent").addEventListener("click", () => {
+    console.log("Rodzic - przechwytywanie");
+}, true);
+
+document.getElementById("child").addEventListener("click", () => {
+    console.log("Dziecko");
+});
+Tutaj zdarzenie na rodzicu wykona się pierwsze, zanim dotrze do dziecka.
+________________________________________
+39. Jak dodać i usunąć event listener wewnątrz innej funkcji?
+Można użyć funkcji pomocniczej:
+
+
+function toggleListener() {
+    let btn = document.getElementById("btn");
+
+    function handleClick() {
+        console.log("Klik!");
+    }
+
+    if (!btn.dataset.listener) {
+        btn.addEventListener("click", handleClick);
+        btn.dataset.listener = "true";
+    } else {
+        btn.removeEventListener("click", handleClick);
+        btn.dataset.listener = "";
+    }
+}
+Kliknięcie innego przycisku może dodawać lub usuwać event listener.
+________________________________________
+40. Jak nasłuchiwać kilku zdarzeń w jednym addEventListener bez forEach?
+Można użyć on[event]:
+
+
+function handleEvent(event) {
+    console.log(`Zdarzenie: ${event.type}`);
+}
+
+let btn = document.getElementById("btn");
+
+["click", "mouseover"].forEach(evt => btn.addEventListener(evt, handleEvent));
+
