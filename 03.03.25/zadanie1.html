@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <button>przycisk</button>
+    <div>div nr 1</div>
+    <p>paragraf nr 1</p>
+    <script>
+        document.addEventListener("click", function(e){
+            console.log("kliknięto w dokument",e.target);
+            console.log("koordynaty kliknięcia",e.clientX,e.clientY);
+        });
+    </script>
+</body>
+</html>
