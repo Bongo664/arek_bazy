@@ -250,7 +250,7 @@ $polaczenie->close();
             </div>
         </div>
         <footer>
-            <p>© 2024 Panel Użytkownika - Wszystkie prawa zastrzeżone</p>
+            <p>Jakiś Footer</p>
         </footer>
     </div>
 </body>
