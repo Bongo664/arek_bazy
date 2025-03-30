@@ -1,35 +1,40 @@
 <?php
-// nie jestem pewnien czy to jest tak jak powinno być ale lepsze to niż nic
-$rowery = [
-    'opcja1' => [
-        ['src' => 'https://kross.pl/media/catalog/product/cache/95a480c323a36b77b1ea03f80f97aed2/K/R/KRHE5Z29X17M008544_KR_Hexagon_5.0_LTD_M_29_M_grf_sza_p_1_3fb7.jpg', 'opis' => 'Rower górski 1'],
-        ['src' => 'https://kross.pl/media/catalog/product/cache/95a480c323a36b77b1ea03f80f97aed2/K/R/KRHE3U29X17M008789_KR_Hexagon_3.0_ULT.RA_M_29_M_grf_hol_p_1_6b0e.jpg', 'opis' => 'Rower górski 2'],
-        ['src' => 'https://kross.pl/media/catalog/product/cache/95a480c323a36b77b1ea03f80f97aed2/K/R/KRLE3U29X17W008796_KR_Lea_3.0_ULT.RA_D_29_M_roz_hol_p_1_5210.jpg', 'opis' => 'Rower górski 3']
-    ],
-    'opcja2' => [
-        ['src' => 'https://kross.pl/media/catalog/product/cache/95a480c323a36b77b1ea03f80f97aed2/K/R/KRVE9Z28X19M007383_KR_Vento_9.0_M_28_M_zie_kam_p_57_81c7.jpg', 'opis' => 'Rower szosowy 1'],
-        ['src' => 'https://kross.pl/media/catalog/product/cache/95a480c323a36b77b1ea03f80f97aed2/K/R/KRVE8Z28X19M007379_KR_Vento_8.0_M_28_M_per_p_53_1225.jpg', 'opis' => 'Rower szosowy 2'],
-        ['src' => 'https://kross.pl/media/catalog/product/cache/95a480c323a36b77b1ea03f80f97aed2/K/R/KRVD8Z28X19M002639_KR_Vento_8.0_M_28_M_cza_sza_m_1_9e88.jpg', 'opis' => 'Rower szosowy 3']
-    ],
-    'opcja3' => [
-        ['src' => 'https://kross.pl/media/catalog/product/cache/95a480c323a36b77b1ea03f80f97aed2/K/R/KRTR5U28X21M008763_KR_Trans_5.0_ULT.RA_M_28_L_cza_hol_m_1_8109.jpg', 'opis' => 'Rower miejski 1'],
-        ['src' => 'https://kross.pl/media/catalog/product/cache/95a480c323a36b77b1ea03f80f97aed2/K/R/KRTR5U28X19W008766_KR_Trans_5.0_ULT.RA_D_28_L_sre_hol_m_1_78f9.jpg', 'opis' => 'Rower miejski 2'],
-        ['src' => 'https://kross.pl/media/catalog/product/cache/95a480c323a36b77b1ea03f80f97aed2/K/R/KRTR3U28X21M008770_KR_Trans_3.0_ULT.RA_M_28_L_sre_hol_p_1_905d.jpg', 'opis' => 'Rower miejski 3']
-    ]
-];
+$host = 'localhost';
+$dbname = 'mojsklepik';
+$user = 'root';
+$password = '';
 
-if (isset($_POST['wyborRoweru'])) {
-    $wybranaOpcja = $_POST['wyborRoweru'];
-} else {
-    $wybranaOpcja = 'opcja1';
+$polaczenie = new mysqli($host, $user, $password, $dbname);
+if ($polaczenie->connect_error) {
+    die("Błąd połączenia z bazą danych: " . $polaczenie->connect_error);
 }
+
+if (isset($_POST['wyborKategorii'])) {
+    $wybranaKategoria = $_POST['wyborKategorii'];
+} else {
+    $wybranaKategoria = '1';
+}
+
+
+$sql = "SELECT src, opis FROM produkty WHERE kategoria = ?";
+$stmt = $polaczenie->prepare($sql);
+$stmt->bind_param("s", $wybranaKategoria);
+$stmt->execute();
+$wynik = $stmt->get_result();
+
+$produkty = [];
+while ($row = $wynik->fetch_assoc()) {
+    $produkty[] = $row;
+}
+
+$stmt->close();
 ?>
 <!DOCTYPE html>
 <html lang="pl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rowery</title>
+    <title>Sklepik</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -71,12 +76,12 @@ if (isset($_POST['wyborRoweru'])) {
             align-items: center;
             flex-wrap: wrap;
         }
-        .rower {
+        .produkt {
             text-align: center;
             margin: 10px;
         }
-        .rower img {
-            max-width: 600px;
+        .produkt img {
+            max-width: 200px;
             height: auto;
             border: 2px solid #ccc;
             border-radius: 10px;
@@ -92,31 +97,34 @@ if (isset($_POST['wyborRoweru'])) {
 <body>
     <div id="kontener">
         <header>
-            <h1>Witamy w sklepie rowerowym</h1>
+            <h1>Witamy w naszym sklepiku</h1>
         </header>
         <div id="glowna">
             <div id="menu">
                 <h2>Wybierz kategorię</h2>
                 <form method="POST">
-                    <select name="wyborRoweru" onchange="this.form.submit()">
-                        <option value="opcja1" <?php echo $wybranaOpcja === 'opcja1' ? 'selected' : ''; ?>>Rowery górskie</option>
-                        <option value="opcja2" <?php echo $wybranaOpcja === 'opcja2' ? 'selected' : ''; ?>>Rowery szosowe</option>
-                        <option value="opcja3" <?php echo $wybranaOpcja === 'opcja3' ? 'selected' : ''; ?>>Rowery miejskie</option>
+                    <select name="wyborKategorii" onchange="this.form.submit()">
+                        <option value="1" <?php echo $wybranaKategoria === '1' ? 'selected' : ''; ?>>Kategoria 1</option>
+                        <option value="2" <?php echo $wybranaKategoria === '2' ? 'selected' : ''; ?>>Kategoria 2</option>
+                        <option value="3" <?php echo $wybranaKategoria === '3' ? 'selected' : ''; ?>>Kategoria 3</option>
                     </select>
                 </form>
             </div>
             <div id="content">
-                <?php foreach ($rowery[$wybranaOpcja] as $rower): ?>
-                    <div class="rower">
-                        <img src="<?php echo $rower['src']; ?>" alt="<?php echo $rower['opis']; ?>">
-                        <p><?php echo $rower['opis']; ?></p>
+                <?php foreach ($produkty as $produkt): ?>
+                    <div class="produkt">
+                        <img src="<?php echo $produkt['src']; ?>" alt="<?php echo $produkt['opis']; ?>">
+                        <p><?php echo $produkt['opis']; ?></p>
                     </div>
                 <?php endforeach; ?>
             </div>
         </div>
         <footer>
-            <p>footer</p>
+            <p>© 2025 Sklepik - Wszystkie prawa zastrzeżone</p>
         </footer>
     </div>
 </body>
 </html>
+<?php
+$polaczenie->close();
+?>
