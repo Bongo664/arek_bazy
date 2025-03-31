@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sklepik</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        #kontener {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+        header {
+            background-color: #333;
+            color: white;
+            padding: 10px;
+            text-align: center;
+        }
+        #glowna {
+            display: flex;
+            flex: 1;
+        }
+        #menu {
+            width: 20%;
+            background-color: #444;
+            color: white;
+            padding: 10px;
+        }
+        #menu select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+        }
+        #content {
+            flex: 1;
+            padding: 20px;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .produkt {
+            text-align: center;
+            margin: 10px;
+        }
+        .produkt img {
+            max-width: 200px;
+            height: auto;
+            border: 2px solid #ccc;
+            border-radius: 10px;
+        }
+        footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div id="kontener">
+        <header>
+            <h1>Baner</h1>
+        </header>
+        <script>
+document.addEventListener('DOMContentLoaded', function() {
+    document.querySelector('.container2').style.display = 'none';
+    document.querySelector('.container3').style.display = 'none';
+    document.querySelector('#galeria').style.display = 'none';
+
+    document.getElementById('pan1').addEventListener('click', function() {
+        document.querySelector('.container').style.display = 'flex';
+        document.querySelector('.container2').style.display = 'none';
+        document.querySelector('.container3').style.display = 'none';
+        document.querySelector('#galeria').style.display = 'none';
+
+    });
+
+    document.getElementById('pan2').addEventListener('click', function() {
+        document.querySelector('.container').style.display = 'none';
+        document.querySelector('.container2').style.display = 'flex';
+        document.querySelector('.container3').style.display = 'none';
+        document.querySelector('#galeria').style.display = 'none';
+    });
+
+    document.getElementById('pan3').addEventListener('click', function() {
+        document.querySelector('.container').style.display = 'none';
+        document.querySelector('.container2').style.display = 'none';
+        document.querySelector('.container3').style.display = 'flex';
+        document.querySelector('#galeria').style.display = 'none';
+    });
+    document.getElementById('pan4').addEventListener('click', function() {
+        document.querySelector('.container').style.display = 'none';
+        document.querySelector('.container2').style.display = 'none';
+        document.querySelector('.container3').style.display = 'none';
+        document.querySelector('#galeria').style.display = 'flex';
+    });
+
+    document.querySelectorAll('.slider').forEach(slider => {
+        slider.addEventListener('input', function() {
+            const container = slider.closest('.box, .box2');
+            if (container) {
+                const image = container.querySelector('img');
+                if (image) {
+                    image.style.opacity = slider.value / 100;
+                }
+            }
+        });
+    });
+});
+        </script>
+        <div id="glowna">
+            <div id="menu">
+                <h2 style="text-align: center;">Menu</h2>
+                <ul>
+                    <li id="pan1">foto1</li>
+                    <li id="pan2">foto2</li>
+                    <li id="pan3">foto3</li>
+                    <li id="pan4">galeria</li>
+                </ul>
+            </div>
+            <div id="content">
+                <div class="container">
+                    <div class="box">
+                        <div class="photo-box">
+                            <div class="photo">
+                                <img src="https://c.files.bbci.co.uk/6D0D/production/_90371972_policeofficer.jpg" alt="Product 1">
+                            </div>
+                        </div>
+                        <div class="suwak">
+                            <form>
+                                <input type="range" min="0" max="100" value="50" class="slider" id="slider1">
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="container2">
+                    <div class="box">
+                        <div class="photo-box">
+                            <div class="photo">
+                                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQgp1NA3zQbozX06pKO_cNlVg40uAegAFORUw&s" alt="Product 1">
+                            </div>
+                        </div>
+                        <div class="suwak">
+                            <form>
+                                <input type="range" min="1" max="100" value="50" class="slider" id="slider2">
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="container3">
+                    <div class="box">
+                        <div class="photo-box">
+                            <div class="photo">
+                                <img src="https://media.gettyimages.com/id/186735363/photo/police-officer.jpg?s=612x612&w=gi&k=20&c=S_iMYOUhMGwW2r2-4HlKUQeuS2nGZq9AMvwjdtuwZ_I=" alt="Product 1">
+                            </div>
+                        </div>
+                        <div class="suwak">
+                            <form>
+                                <input type="range" min="1" max="100" value="50" class="slider" id="slider3">
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div id="galeria">
+                    <div class="box2">
+                        <div class="photo-box">
+                            <div class="photo2">
+                                <img src="https://media.gettyimages.com/id/186735363/photo/police-officer.jpg?s=612x612&w=gi&k=20&c=S_iMYOUhMGwW2r2-4HlKUQeuS2nGZq9AMvwjdtuwZ_I=" alt="Product 1">
+                            </div>
+                        </div>
+                        <div class="suwak">
+                            <form>
+                                <input type="range" min="1" max="100" value="50" class="slider" id="sliderGal1">
+                            </form>
+                        </div>
+                    </div>
+                    <div class="box2">
+                        <div class="photo-box">
+                            <div class="photo2">
+                                <img src="https://media.gettyimages.com/id/186735363/photo/police-officer.jpg?s=612x612&w=gi&k=20&c=S_iMYOUhMGwW2r2-4HlKUQeuS2nGZq9AMvwjdtuwZ_I=" alt="Product 1">
+                            </div>
+                        </div>
+                        <div class="suwak">
+                            <form>
+                                <input type="range" min="1" max="100" value="50" class="slider" id="sliderGal1">
+                            </form>
+                        </div>
+                    </div>
+                    <div class="box2">
+                        <div class="photo-box">
+                            <div class="photo2">
+                                <img src="https://media.gettyimages.com/id/186735363/photo/police-officer.jpg?s=612x612&w=gi&k=20&c=S_iMYOUhMGwW2r2-4HlKUQeuS2nGZq9AMvwjdtuwZ_I=" alt="Product 1">
+                            </div>
+                        </div>
+                        <div class="suwak">
+                            <form>
+                                <input type="range" min="1" max="100" value="50" class="slider" id="sliderGal1">
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <footer>
+            <p>wxretyuhjiko</p>
+        </footer>
+    </div>
+</body>
+</html>
