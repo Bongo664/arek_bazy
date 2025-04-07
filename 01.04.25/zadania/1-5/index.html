@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zadania 1-5</title>
+</head>
+<body>
+    <h1>Zadania 1-5</h1>
+    <div id="output"></div>
+
+    <script>
+        function czyPierwsza(liczba) {
+            if (liczba <= 1) return false;
+            for (let i = 2; i <= Math.sqrt(liczba); i++) {
+                if (liczba % i === 0) return false;
+            }
+            return true;
+        }
+
+        function nww(a, b) {
+            const nwd = (x, y) => (!y ? x : nwd(y, x % y));
+            return Math.abs(a * b) / nwd(a, b);
+        }
+
+        function czyDoskonala(liczba) {
+            let suma = 0;
+            for (let i = 1; i < liczba; i++) {
+                if (liczba % i === 0) suma += i;
+            }
+            return suma === liczba;
+        }
+
+        function liczbyPierwszeWPrzedziale(start, koniec) {
+            const liczbyPierwsze = [];
+            for (let i = start; i <= koniec; i++) {
+                if (czyPierwsza(i)) liczbyPierwsze.push(i);
+            }
+            return liczbyPierwsze;
+        }
+
+        function konwertujLiczbe(liczba) {
+            return {
+                binarna: liczba.toString(2),
+                ósemkowa: liczba.toString(8),
+                szesnastkowa: liczba.toString(16).toUpperCase(),
+            };
+        }
+
+        document.addEventListener("DOMContentLoaded", () => {
+            const output = document.getElementById("output");
+
+            const liczba1 = 29;
+            const liczba2 = 6;
+            const przedzialStart = 10, przedzialKoniec = 50;
+            const liczbaDziesietna = 255;
+
+            output.innerHTML = `
+                <h2>Wyniki:</h2>
+                <p>Zadanie 1: Czy ${liczba1} jest liczbą pierwszą? ${czyPierwsza(liczba1)}</p>
+                <p>Zadanie 2: NWW liczb 12 i 15 to ${nww(12, 15)}</p>
+                <p>Zadanie 3: Czy ${liczba2} jest liczbą doskonałą? ${czyDoskonala(liczba2)}</p>
+                <p>Zadanie 4: Liczby pierwsze w przedziale od ${przedzialStart} do ${przedzialKoniec}: ${liczbyPierwszeWPrzedziale(przedzialStart, przedzialKoniec).join(", ")}</p>
+                <p>Zadanie 5: Liczba dziesiętna ${liczbaDziesietna} w systemie binarnym: ${konwertujLiczbe(liczbaDziesietna).binarna}, ósemkowym: ${konwertujLiczbe(liczbaDziesietna).ósemkowa}, szesnastkowym: ${konwertujLiczbe(liczbaDziesietna).szesnastkowa}</p>
+            `;
+        });
+    </script>
+</body>
+</html>
