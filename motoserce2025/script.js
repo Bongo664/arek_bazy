@@ -1,94 +1,85 @@
 document.addEventListener('DOMContentLoaded', function() {
-    const form = document.getElementById('registrationForm');
-    const peselInput = document.getElementById('pesel');
-    const adultFields = document.getElementById('adultFields');
-    const ageInfo = document.getElementById('ageInfo');
-    const indicator = document.getElementById('indicator');
-    const fullName = document.getElementById('fullName');
+    const formularz = document.getElementById('registrationForm');
+    const polePesel = document.getElementById('pesel');
+    const polaPelnoletni = document.getElementById('adultFields');
+    const informacjaWiek = document.getElementById('ageInfo');
+    const wskaznik = document.getElementById('indicator');
+    const pelneImie = document.getElementById('fullName');
 
-    // Wyrażenia regularne
-    const nameRegex = /^[a-zżźćńółęąśŻŹĆĄŚĘŁÓŃ\s]+$/i;
-    const digitsOnlyRegex = /^\d+$/;
-    const licenseRegex = /^[A-D]$/;
+    const wzorzecNazwy = /^[a-zżźćńółęąśŻŹĆĄŚĘŁÓŃ\s]+$/i;
+    const tylkoCyfry = /^\d+$/;
+    const wzorzecPrawaJazdy = /^[A-D]$/;
 
-    // Generuj losowy numer indykatora
-    indicator.value = Math.floor(Math.random() * 10000) + 1;
+    wskaznik.value = Math.floor(Math.random() * 10000) + 1;
 
-    // Walidacja PESEL
-    peselInput.addEventListener('input', function() {
-        if (this.value.length === 11 && digitsOnlyRegex.test(this.value)) {
-            const year = parseInt(this.value.substring(0, 2));
-            const month = parseInt(this.value.substring(2, 4));
-            const day = parseInt(this.value.substring(4, 6));
+    polePesel.addEventListener('input', function() {
+        if (this.value.length === 11 && tylkoCyfry.test(this.value)) {
+            const rok = parseInt(this.value.substring(0, 2));
+            const miesiac = parseInt(this.value.substring(2, 4));
+            const dzien = parseInt(this.value.substring(4, 6));
 
-            let fullYear;
-            if (month > 80) {
-                fullYear = 1800 + year;
-            } else if (month > 60) {
-                fullYear = 2200 + year;
-            } else if (month > 40) {
-                fullYear = 2100 + year;
-            } else if (month > 20) {
-                fullYear = 2000 + year;
+            let pelnyRok;
+            if (miesiac > 80) {
+                pelnyRok = 1800 + rok;
+            } else if (miesiac > 60) {
+                pelnyRok = 2200 + rok;
+            } else if (miesiac > 40) {
+                pelnyRok = 2100 + rok;
+            } else if (miesiac > 20) {
+                pelnyRok = 2000 + rok;
             } else {
-                fullYear = 1900 + year;
+                pelnyRok = 1900 + rok;
             }
 
-            const birthDate = new Date(fullYear, (month-1) % 20, day);
-            const today = new Date();
+            const dataUrodzenia = new Date(pelnyRok, (miesiac-1) % 20, dzien);
+            const dzisiaj = new Date();
 
-            // Dokładne obliczenie wieku
-            let age = today.getFullYear() - birthDate.getFullYear();
-            const monthDiff = today.getMonth() - birthDate.getMonth();
+            let wiek = dzisiaj.getFullYear() - dataUrodzenia.getFullYear();
+            const roznicaMiesiecy = dzisiaj.getMonth() - dataUrodzenia.getMonth();
             
-            if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
-                age--;
+            if (roznicaMiesiecy < 0 || (roznicaMiesiecy === 0 && dzisiaj.getDate() < dataUrodzenia.getDate())) {
+                wiek--;
             }
 
-            if (age >= 18) {
-                ageInfo.textContent = "Osoba pełnoletnia - możliwa rejestracja";
-                ageInfo.style.color = "green";
-                adultFields.style.display = "block";
+            if (wiek >= 18) {
+                informacjaWiek.textContent = "Osoba pełnoletnia - możliwa rejestracja";
+                informacjaWiek.style.color = "green";
+                polaPelnoletni.style.display = "block";
             } else {
-                ageInfo.textContent = "Osoba niepełnoletnia - rejestracja niemożliwa";
-                ageInfo.style.color = "red";
-                adultFields.style.display = "none";
+                informacjaWiek.textContent = "Osoba niepełnoletnia - rejestracja niemożliwa";
+                informacjaWiek.style.color = "red";
+                polaPelnoletni.style.display = "none";
             }
         } else {
-            ageInfo.textContent = "Nieprawidłowy format PESEL";
-            ageInfo.style.color = "red";
-            adultFields.style.display = "none";
+            informacjaWiek.textContent = "Nieprawidłowy format PESEL";
+            informacjaWiek.style.color = "red";
+            polaPelnoletni.style.display = "none";
         }
     });
 
-    // Walidacja formularza przy wysyłaniu
-    form.addEventListener('submit', function(e) {
+    formularz.addEventListener('submit', function(e) {
         e.preventDefault();
         
-        if (adultFields.style.display === "block") {
-            // Sprawdzanie imienia i nazwiska
-            if (fullName.value.length < 18 || !nameRegex.test(fullName.value)) {
+        if (polaPelnoletni.style.display === "block") {
+            if (pelneImie.value.length < 18 || !wzorzecNazwy.test(pelneImie.value)) {
                 alert('Imię i nazwisko musi zawierać minimum 18 znaków i tylko litery!');
                 return;
             }
 
-            // Sprawdzanie pojemności silnika
-            const engineSize = document.getElementById('engineSize').value;
-            if (!digitsOnlyRegex.test(engineSize)) {
+            const pojemnoscSilnika = document.getElementById('engineSize').value;
+            if (!tylkoCyfry.test(pojemnoscSilnika)) {
                 alert('Pojemność silnika musi zawierać tylko cyfry!');
                 return;
             }
 
-            // Sprawdzanie stanu licznika
-            const mileage = document.getElementById('mileage').value;
-            if (!digitsOnlyRegex.test(mileage)) {
+            const przebieg = document.getElementById('mileage').value;
+            if (!tylkoCyfry.test(przebieg)) {
                 alert('Stan licznika musi zawierać tylko cyfry!');
                 return;
             }
 
-            // Sprawdzanie kategorii prawa jazdy
-            const license = document.getElementById('license').value.toUpperCase();
-            if (!licenseRegex.test(license)) {
+            const prawoJazdy = document.getElementById('license').value.toUpperCase();
+            if (!wzorzecPrawaJazdy.test(prawoJazdy)) {
                 alert('Kategoria prawa jazdy musi być jedną z liter: A, B, C lub D!');
                 return;
             }
